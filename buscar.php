@@ -10,17 +10,17 @@ try {
 
 <?php 
 
-if (empty($_POST['texto'])) {
+if (!empty($_POST['texto'])) {
 	$texto = addslashes($_POST['texto']);
 
-	$sql = prepare("SELECT * FROM am_local_atendimento WHERE DS_LOCAL_ATENDIMENTO LIKE :texto");
-	$sql->bindValue(":texto", "%".$texto."%");
+	$sql = $pdo->prepare("SELECT * FROM am_local_atendimento WHERE DS_LOCAL_ATENDIMENTO LIKE :texto");
+	$sql->bindValue(":texto", '%'.$texto.'%');
 	$sql->execute();
 
 	if ($sql->rowCount() > 0) {
 		
 		foreach ($sql->fetchAll() as $pessoa) {
-			echo $pessoa['nome']."<br>";
+			echo utf8_encode($pessoa['DS_LOCAL_ATENDIMENTO'])."<br>";
 		}
 	}
 }
